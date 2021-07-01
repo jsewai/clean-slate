@@ -4,17 +4,24 @@
       max-width: {{ section.settings.logo_max_width }}px;
     }
   {% endif %}
+  .announcement-bar {
+    background-color: {{ section.settings.announcement_bar_color }};
+    text-align: center;
+    text-decoration: none;
+    
+  }
+  .announcement-bar__message {
+    color: {{ section.settings.announcement_bar_text }};
+  }
 </style>
 
 
 <div data-section-id="{{ section.id }}" data-section-type="header-section">
   <header role="banner">
     {%- if section.settings.show_announcement -%}
-      
         <div class="announcement-bar">
           <p class="announcement-bar__message">{{section.settings.announcement_text}}</p>
         </div>
-      
     {%- endif -%}
 
     {% if template.name == 'index' %}
@@ -160,6 +167,18 @@
         "id": "announcement_text",
         "label": "Announcement Text",
         "default": "Type Announcement Text"
+      },      
+      {
+        "type": "color",
+        "id": "announcement_bar_color",
+        "label": "Background color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bar_text",
+        "label": "Announcement Text Color",
+        "default": "#ffffff"
       }
     ]
   }
