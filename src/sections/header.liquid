@@ -1,134 +1,164 @@
 <style>
-  {% if section.settings.logo != blank %}
-    .site-header__logo-image {
-      max-width: {{ section.settings.logo_max_width }}px;
+{%comment%}
+  {% if section.settings.hero_image != blank %}
+    .site-header__hero-image {
+      max-width: {{ section.settings.hero_max_width }}px;
     }
   {% endif %}
+  {%endcomment%}
+
+  .hero-image{
+    width: 100%;
+    height: 100vw;
+    max-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  {% if section.settings.show_announcement%}
+  .hero-image{
+    margin-top: 3.5rem;
+  }
+  {% endif %}
+  .navbar{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+  }
+  .navcontents{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+  }
+  .hero-image__text{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+  .header-text{
+
+  }
+  .header-description{
+
+  }    
   .announcement-bar {
     background-color: {{ section.settings.announcement_bar_color }};
     text-align: center;
     text-decoration: none;
-    
   }
   .announcement-bar__message {
     color: {{ section.settings.announcement_bar_text }};
+    line-height: 3.5;
   }
 </style>
 
 
 <div data-section-id="{{ section.id }}" data-section-type="header-section">
   <header role="banner">
+    <nav role="navigation" class="navbar">  
     {%- if section.settings.show_announcement -%}
-        <div class="announcement-bar">
-          <p class="announcement-bar__message">{{section.settings.announcement_text}}</p>
-        </div>
-    {%- endif -%}
-
-    {% if template.name == 'index' %}
-      <h1 itemscope itemtype="http://schema.org/Organization">
-    {% else %}
-      <div class="h1" itemscope itemtype="http://schema.org/Organization">
-    {% endif %}
-        <a href="/" itemprop="url" class="site-logo{% if section.settings.logo != blank %} site-header__logo-image{% endif %}">
-          {% if section.settings.logo != blank %}
-            {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
-            <img src="{{ section.settings.logo | img_url: image_size }}"
-                 srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
-                 alt="{{ section.settings.logo.alt | default: shop.name }}"
-                 itemprop="logo">
-          {% else %}
-            {{ shop.name }}
-          {% endif %}
-       
-        </a>
-    {% if template.name == 'index' %}
-      </h1>
-    {% else %}
+      <div class="announcement-bar">
+        <p class="announcement-bar__message">{{section.settings.announcement_text}}</p>
       </div>
-    {% endif %}
+    {%- endif -%}
+    <section class="navcontents">
+      <a href="/cart">
+        {% include 'icon-cart' %}
+        {{ 'layout.cart.title' | t }}
+        ({{ cart.item_count }} {{ 'layout.cart.items_count' | t: count: cart.item_count }})
+      </a>
+      {% if shop.customer_accounts_enabled %}
+        <ul>
+          {% if customer %}
+            <li>
+              {% if customer.first_name != blank %}
+                {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
+                {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+              {% else %}
+                <a href="/account">{{ 'layout.customer.account' | t }}</a>
+              {% endif %}
+            </li>
+            <li>
+              {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            </li>
+          {% else %}
+            <li>
+              {{ 'layout.customer.log_in' | t | customer_login_link }}
+            </li>
+            <li>
+              {{ 'layout.customer.create_account' | t | customer_register_link }}
+            </li>
+          {% endif %}
+        </ul>
+      {% endif %}
+      
+      <form action="/search" method="get" role="search">
+        <label for="Search" class="label-hidden">
+          {{ 'general.search.placeholder' | t }}
+        </label>
+        <input type="search"
+              name="q"
+              id="Search"
+              value="{{ search.terms | escape }}"
+              placeholder="{{ 'general.search.placeholder' | t }}">
+        <button type="submit" class="btn">
+          {% include 'icon-search' %}
+          <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+        </button>
+      </form>
 
-    <a href="/cart">
-      {% include 'icon-cart' %}
-      {{ 'layout.cart.title' | t }}
-      ({{ cart.item_count }} {{ 'layout.cart.items_count' | t: count: cart.item_count }})
-    </a>
-    {% if shop.customer_accounts_enabled %}
       <ul>
-        {% if customer %}
-          <li>
-            {% if customer.first_name != blank %}
-              {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
-              {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
-            {% else %}
-              <a href="/account">{{ 'layout.customer.account' | t }}</a>
-            {% endif %}
-          </li>
-          <li>
-            {{ 'layout.customer.log_out' | t | customer_logout_link }}
-          </li>
-        {% else %}
-          <li>
-            {{ 'layout.customer.log_in' | t | customer_login_link }}
-          </li>
-          <li>
-            {{ 'layout.customer.create_account' | t | customer_register_link }}
-          </li>
-        {% endif %}
+        {% for link in linklists[section.settings.main_linklist].links %}
+          {% if link.links != blank %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+              <ul>
+                {% for childlink in link.links %}
+                  {% if childlink.links != blank %}
+                    <li>
+                      <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                      <ul>
+                        {% for grandchildlink in childlink.links %}
+                          <li>
+                            <a href="{{ grandchildlink.url }}">{{ grandchildlink.title | escape }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
       </ul>
-    {% endif %}
+    </section>
+  </nav>
 
-    <form action="/search" method="get" role="search">
-      <label for="Search" class="label-hidden">
-        {{ 'general.search.placeholder' | t }}
-      </label>
-      <input type="search"
-             name="q"
-             id="Search"
-             value="{{ search.terms | escape }}"
-             placeholder="{{ 'general.search.placeholder' | t }}">
-      <button type="submit" class="btn">
-        {% include 'icon-search' %}
-        <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
-      </button>
-    </form>
-
+  {% capture image_size %}{{ section.settings.hero_max_width }}x{% endcapture %}
+  <section class="hero-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ section.settings.hero_image | img_url: image_size }});">
+    <div class="hero-image__text">
+      <h1 class="header-text">{{ section.settings.hero_bar_header }}</h1>
+      <p class="header-description">{{ section.settings.hero_bar_text }}</p>
+    </div>
+  </section>
   </header>
 
-  <nav role="navigation">
-    <ul>
-      {% for link in linklists[section.settings.main_linklist].links %}
-        {% if link.links != blank %}
-          <li>
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-            <ul>
-              {% for childlink in link.links %}
-                {% if childlink.links != blank %}
-                  <li>
-                    <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-                    <ul>
-                      {% for grandchildlink in childlink.links %}
-                        <li>
-                          <a href="{{ grandchildlink.url }}">{{ grandchildlink.title | escape }}</a>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  </li>
-                {% else %}
-                  <li>
-                    <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </li>
-        {% else %}
-          <li>
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </nav>
+  
 </div>
 
 {% schema %}
@@ -137,18 +167,18 @@
     "settings": [
       {
         "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image"
+        "id": "hero_image",
+        "label": "Hero image"
       },
       {
         "type": "range",
-        "id": "logo_max_width",
-        "min": 50,
-        "max": 450,
+        "id": "hero_max_width",
+        "min": 750,
+        "max": 1600,
         "step": 10,
         "unit": "px",
-        "label": "Custom logo width",
-        "default": 250
+        "label": "Custom hero width",
+        "default": 1600
       },
       {
         "type": "link_list",
@@ -179,6 +209,18 @@
         "id": "announcement_bar_text",
         "label": "Announcement Text Color",
         "default": "#ffffff"
+      },
+      {
+        "type": "text",
+        "id": "hero_bar_header",
+        "label": "Hero Bar Header",
+        "default": "Hero Bar Header"
+      },      
+      {
+        "type": "text",
+        "id": "hero_bar_text",
+        "label": "Hero Bar Text",
+        "default": "Hero Bar Text"
       }
     ]
   }

@@ -10,6 +10,7 @@ window.theme = window.theme || {};
 // =require slate/currency.js
 // =require slate/images.js
 // =require slate/variants.js
+// =require slate/slideshow.js
 
 /*================ Sections ================*/
 // =require sections/product.js
