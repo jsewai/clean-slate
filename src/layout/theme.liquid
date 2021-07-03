@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.color_primary }}">
   <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 
   {% if settings.favicon != blank %}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
@@ -57,8 +58,10 @@
 
   <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
   <!--[if lt IE 9]><script src="{{ 'theme.js' | asset_url }}"></script><![endif]-->
-
+  <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   {{ content_for_header }}
+
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template.name | handle }}">

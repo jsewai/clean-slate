@@ -20,6 +20,7 @@ window.theme = window.theme || {};
 // =require templates/customers-login.js
 
 $(document).ready(function() {
+  console.log("hi there")
   var sections = new slate.Sections();
   sections.register('product', theme.Product);
 

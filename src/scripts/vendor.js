@@ -6,7 +6,7 @@
 /*!
  * jquery-3.3.1.min.js
  */
-// =require vendor/jquery-3.3.1.min.js
+
 
 // Attempts to preserve comments that likely contain licensing information,
 // even if the comment does not have directives such as `@license` or `/*!`.
