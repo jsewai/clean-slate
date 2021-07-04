@@ -1,4 +1,3 @@
-
 <style>
   .collection-title{
     text-align: center;
@@ -24,20 +23,12 @@
   .product-panel__image{
     grid-column: 1/3;
   }
-  @media screen and (max-width:750px) {
-    .collection-box{
-      margin-top: 10rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      padding: 0 20px;
-    }
-  }
 </style>
 
 
 {%- assign collection = collections[section.settings.featured_collection] -%}
 <div class="container">
-  <h1 class="collection-title">{{ section.settings.collection_title }}</h1> 
+  <h1 class="collection-title">{{ collection.title }}</h1> 
   <ul class="collection-box">
     {% for product in collection.products limit:6%}
     <li class='product-panel'>
@@ -55,11 +46,11 @@
   {% schema %} 
 
   {
-    "name": "Collection",
+    "name": "Default Page",
     "settings": [
       {
         "type": "collection",
-        "id": "featured_collection",
+        "id": "default_collection",
         "label": {
           "cs": "Kolekce",
           "da": "Kollektion",
@@ -83,12 +74,6 @@
           "zh-CN": "收藏",
           "zh-TW": "商品系列"
         }
-      },
-      {
-        "type": "text",
-        "id": "collection_title",
-        "label": "Collection Title",
-        "default": "Awesome Shoes"
       }
     ]
   }

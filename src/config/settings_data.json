@@ -1,10 +1,87 @@
 {
-  "current": "Default",
+  "current": {
+    "social_twitter_link": "https:\/\/twitter.com\/",
+    "social_facebook_link": "https:\/\/www.facebook.com\/",
+    "social_youtube_link": "https:\/\/www.youtube.com\/",
+    "sections": {
+      "collection-list": {
+        "type": "collection-list",
+        "settings": {
+          "featured_collection": "featured-collection"
+        }
+      },
+      "featured-collection": {
+        "type": "featured-collection",
+        "disabled": true,
+        "settings": {
+          "title": "Featured collection",
+          "collection": "frontpage"
+        }
+      },
+      "featured-product": {
+        "type": "featured-product",
+        "disabled": true,
+        "settings": {
+          "product": "",
+          "show_share_buttons": false
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "hero_max_width": 1600,
+          "main_linklist": "main-menu",
+          "show_announcement": true,
+          "announcement_text": "Type Announcement Text",
+          "announcement_bar_color": "#000000",
+          "announcement_bar_text": "#ffffff",
+          "hero_bar_header": "Hero Bar Header",
+          "hero_bar_text": "Hero Bar Text"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "footer_linklist": "footer"
+        }
+      },
+      "email-subscription": {
+        "type": "email-subscription",
+        "settings": {
+        }
+      },
+      "only-header": {
+        "type": "only-header",
+        "settings": {
+          "main_linklist": "main-menu",
+          "show_announcement": false,
+          "announcement_text": "Type Announcement Text",
+          "announcement_bar_color": "#000000",
+          "announcement_bar_text": "#ffffff",
+          "hero_bar_header": "Hero Bar Header",
+          "hero_bar_text": "Hero Bar Text"
+        }
+      },
+      "product": {
+        "type": "product",
+        "settings": {
+          "show_share_buttons": true
+        }
+      }
+    },
+    "content_for_index": [
+      "collection-list",
+      "featured-collection",
+      "featured-product"
+    ]
+  },
   "presets": {
     "Default": {
       "sections": {
         "collection-list": {
-          "type": "collection-list"
+          "type": "collection-list",
+          "settings": {
+          }
         },
         "featured-collection": {
           "type": "featured-collection",
@@ -13,7 +90,9 @@
           }
         },
         "featured-product": {
-          "type": "featured-product"
+          "type": "featured-product",
+          "settings": {
+          }
         }
       },
       "content_for_index": [

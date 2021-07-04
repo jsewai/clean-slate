@@ -1,11 +1,13 @@
 {% layout 'no-hero-image' %}
 <style>
+  .product-choice{
+    margin: 0 5rem;
+  }
   .product-wrapper{
     margin-top: 10rem;
     display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 1fr .5fr;
-    padding: 0 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto 1fr;
   }
   .product-image{
     padding: 0 10px;
@@ -14,20 +16,52 @@
     grid-row: 2 / 2;
     grid-column: 1 / 3;
   }
+  .add-button{
+    border: 1px black solid;
+    border-radius: unset;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  #shopify-product-reviews{
+    grid-column: 1 / 3;
+  }
+  .radio-wrapper{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1rem;
+  }
+  .radio-panel{
+    text-align: center;
+  }
+  .radio-button{
+    position: absolute;
+    display: none;
+  }
+  .radio-label{
+    padding: 10px 20px;
+    border: 1px grey solid !important;
+    width: 100%;
+  }
+  .radio-button:checked + label{
+    border: 2px black solid !important;
+  }
+  .sns-icons a{
+    margin: 0 2px;
+  }
   @media screen and (max-width:750px) {
+    .product-choice{
+      margin: 0;
+    }
     .product-wrapper{
       margin-top: 10rem;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: block;
       padding: 0 20px;
-    }
-    .rte{
-      grid-row: 3;
-      grid-column: 1;
     }
   }
 </style>
-<div data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
+<div class="product-choice" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
 
   {%- assign current_variant = product.selected_or_first_available_variant -%}
   {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
@@ -38,13 +72,28 @@
   <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
   <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
-  <div class="product-wrapper">
+  <div class="product-wrapper container">
     {% if featured_image != blank %}
       <img class="product-image" src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
     {% endif %}
     <div>
+      
+      <h5>{{ product.vendor }}</h5>
+      <h3 data-price-wrapper>
+        <span data-product-price>
+          {{ current_variant.price | money }}
+        </span>
+
+        {% if product.compare_at_price_max > product.price %}
+          <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+          <s data-compare-price>
+            {% if current_variant.compare_at_price > current_variant.price %}
+              {{ current_variant.compare_at_price | money }}
+            {% endif %}
+          </s>
+        {% endif %}
+      </h3>
       <h1>{{ product.title }}</h1>
-      <p>{{ product.vendor }}</p>
 
       <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <meta itemprop="priceCurrency" content="{{ shop.currency }}">
@@ -58,19 +107,25 @@
                 <label for="SingleOptionSelector-{{ forloop.index0 }}">
                   {{ option.name }}
                 </label>
-
-                <select
-                  id="SingleOptionSelector-{{ forloop.index0 }}"
-                  data-single-option-selector
-                  data-index="option{{ option.position }}">
+                <div class="radio-wrapper">
                   {% for value in option.values %}
-                    <option
-                      value="{{ value | escape }}"
-                      {% if option.selected_value == value %}selected="selected"{% endif %}>
+                    <div class="radio-panel">
+                      <input
+                        type="radio"
+                        name="{{option.name}}"
+                        class="radio-button"
+                        id="radio-{{forloop.index0}}{{ value }}"
+                        data-single-option-selector
+                        data-index="option{{ option.position }}"
+                        value="{{ value | escape }}"
+                        {% if forloop.first %}checked="checked"{% endif %}
+                      />
+                      <label class="radio-label" for="radio-{{ forloop.index0 }}{{ value }}">
                         {{ value }}
-                    </option>
+                      </label>
+                    </div>
                   {% endfor %}
-                </select>
+                </div>
               </div>
             {% endfor %}
           {% endunless %}
@@ -84,27 +139,12 @@
                   {{ variant.title }}
               </option>
             {% endfor %}
-          </select>
+          </select>          
+          <input type="hidden" id="Quantity" name="quantity" value="1" min="1">
 
-          <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
-          <input type="number" id="Quantity" name="quantity" value="1" min="1">
-
-          <div data-price-wrapper>
-            <span data-product-price>
-              {{ current_variant.price | money }}
-            </span>
-
-            {% if product.compare_at_price_max > product.price %}
-              <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
-              <s data-compare-price>
-                {% if current_variant.compare_at_price > current_variant.price %}
-                  {{ current_variant.compare_at_price | money }}
-                {% endif %}
-              </s>
-            {% endif %}
-          </div>
 
           <button
+            class="btn add-button"
             type="submit"
             name="add"
             data-add-to-cart
@@ -122,7 +162,9 @@
       </div>
 
       {% if section.settings.show_share_buttons %}
-        {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+        <div class="sns-icons">
+          {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+        </div>
       {% endif %}
 
       {% unless product == empty %}
@@ -134,13 +176,11 @@
 
       
       <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
-      <div id="shopify-product-reviews" data-id="{{product.id}}">aaa{{ product.metafields.spr.reviews }}</div>
-
-
     </div>
     <div class="rte">
       {{ product.description }}
     </div>
+    <div id="shopify-product-reviews" data-id="{{product.id}}">aaa{{ product.metafields.spr.reviews }}</div>
   </div>
 </div>
 

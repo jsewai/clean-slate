@@ -1,6 +1,5 @@
 window.slate = window.slate || {};
 window.theme = window.theme || {};
-
 /*================ Slate ================*/
 // =require slate/a11y.js
 // =require slate/cart.js
@@ -11,7 +10,6 @@ window.theme = window.theme || {};
 // =require slate/images.js
 // =require slate/variants.js
 // =require slate/slideshow.js
-// =require slate/drawer.js
 
 /*================ Sections ================*/
 // =require sections/product.js
