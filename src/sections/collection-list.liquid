@@ -1,3 +1,15 @@
+{% javascript %}
+$(function(){
+  $('.collection-slide').slick({
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1
+  });
+})
+{% endjavascript %}
+
+
 {%- assign collection = collections[section.settings.featured_collection] -%}
 <h1>{{ collection.title }}</h1> 
 <ul class="collection-slide">

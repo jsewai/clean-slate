@@ -65,11 +65,12 @@
 
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
-  {% section 'header' %}
+  
 
   <main role="main" id="MainContent">
+    {% section 'only-header' %}  
     {{ content_for_layout }}
-    {% section 'email-subscription' %}
+    
   </main>
 
   {% section 'footer' %}

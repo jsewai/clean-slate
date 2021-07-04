@@ -11,6 +11,7 @@ window.theme = window.theme || {};
 // =require slate/images.js
 // =require slate/variants.js
 // =require slate/slideshow.js
+// =require slate/drawer.js
 
 /*================ Sections ================*/
 // =require sections/product.js
@@ -20,7 +21,7 @@ window.theme = window.theme || {};
 // =require templates/customers-login.js
 
 $(document).ready(function() {
-  console.log("hi there")
+  console.log("hihi")
   var sections = new slate.Sections();
   sections.register('product', theme.Product);
 

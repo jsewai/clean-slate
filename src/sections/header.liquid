@@ -1,11 +1,4 @@
 <style>
-  {% if section.settings.hero_image != blank %}
-    .site-header__hero-image {
-      max-width: {{ section.settings.hero_max_width }}px;
-    }
-  {% endif %}
-  {%endcomment%}
-
   .hero-image{
     width: 100%;
     height: 100vw;
@@ -31,6 +24,7 @@
     display: flex;
     justify-content: center;
     background-color: #ffffff;
+    border-bottom: 1px solid black;
   }
   .hero-image__text{
     text-align: center;
@@ -97,6 +91,7 @@
         </ul>
       {% endif %}
       
+   
       <form action="/search" method="get" role="search">
         <label for="Search" class="label-hidden">
           {{ 'general.search.placeholder' | t }}

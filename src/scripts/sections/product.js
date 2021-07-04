@@ -5,7 +5,6 @@
  *
    * @namespace product
  */
-
 theme.Product = (function() {
 
   var selectors = {
