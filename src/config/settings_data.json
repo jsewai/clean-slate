@@ -29,14 +29,15 @@
       "header": {
         "type": "header",
         "settings": {
+          "hero_image": "shopify:\/\/shop_images\/hightop-lighted-sneakers_7cd983f3-6586-402c-8371-8fe1ef203d82.jpg",
           "hero_max_width": 1600,
           "main_linklist": "main-menu",
           "show_announcement": true,
-          "announcement_text": "Type Announcement Text",
+          "announcement_text": "Promotion For Shoes",
           "announcement_bar_color": "#000000",
           "announcement_bar_text": "#ffffff",
-          "hero_bar_header": "Hero Bar Header",
-          "hero_bar_text": "Hero Bar Text"
+          "hero_bar_header": "Find your best shoes",
+          "hero_bar_text": "store hour: 9:00am ~ 5:00pm"
         }
       },
       "footer": {
