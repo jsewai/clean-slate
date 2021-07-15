@@ -1,18 +1,14 @@
 <style>
-  .hero-image{
-    width: 100%;
-    height: 100vw;
-    max-height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+
+  {%- if section.settings.show_announcement -%}
+  .header{
+    margin-top:11rem;
   }
-  {% if section.settings.show_announcement%}
-  .hero-image{
-    margin-top: 3.5rem;
+  {%- else -%}
+  .header{
+    margin-top: 7rem !important;
   }
-  {% endif %}
+  {%- endif -%}
   .nav{
     position: fixed;
     width: 100%;
@@ -28,14 +24,6 @@
     border-bottom: 1px solid black;
     display: grid;
     grid-template-columns: auto 1fr auto;
-  }
-  .hero-image__text{
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
   }
   .announcement-bar {
     width: 100%;
@@ -178,13 +166,6 @@
     </section>
   </nav>
 
-  {% capture image_size %}{{ section.settings.hero_max_width }}x{% endcapture %}
-  <section class="hero-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ section.settings.hero_image | img_url: image_size }});">
-    <div class="hero-image__text">
-      <h1 class="header-text">{{ section.settings.hero_bar_header }}</h1>
-      <p class="header-description">{{ section.settings.hero_bar_text }}</p>
-    </div>
-  </section>
   </header>
 
   
@@ -194,21 +175,6 @@
   {
     "name": "Header",
     "settings": [
-      {
-        "type": "image_picker",
-        "id": "hero_image",
-        "label": "Hero image"
-      },
-      {
-        "type": "range",
-        "id": "hero_max_width",
-        "min": 750,
-        "max": 1600,
-        "step": 10,
-        "unit": "px",
-        "label": "Custom hero width",
-        "default": 1600
-      },
       {
         "type": "link_list",
         "id": "main_linklist",
@@ -238,18 +204,6 @@
         "id": "announcement_bar_text",
         "label": "Announcement Text Color",
         "default": "#ffffff"
-      },
-      {
-        "type": "text",
-        "id": "hero_bar_header",
-        "label": "Hero Bar Header",
-        "default": "Hero Bar Header"
-      },      
-      {
-        "type": "text",
-        "id": "hero_bar_text",
-        "label": "Hero Bar Text",
-        "default": "Hero Bar Text"
       }
     ]
   }

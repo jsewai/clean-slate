@@ -1,142 +1,187 @@
 <style>
-.footer-box{
-  padding: 2rem;
-  border-top: #40271d 1px solid;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-}
-.footer-box__left-panel{
-  display:grid;
-  grid-template-rows: 1fr auto;
-}
-.footer-box__right-panel{
-  text-align: center;
-}
-.footer-box__subscription{
-  margin: auto 0;
-}
-.footer-box__subscription form{
-  padding: 0 20%;
-}
-.custom-subscription{
-  border: 1px black solid;
-  border-radius: unset;
-}
-.footer-box__social-media{
-  margin: auto;
-}
-.social-media__icons {
-  display: inline-block;
-  padding: 0 15px;
-}
-.copy-right{
-  text-align: center;
-  grid-column: 1/3;
-}
-@media screen and (max-width:750px) {
-    .footer-box{
-      display: block;
-    }
-    .footer-box__subscription form{
-      padding: 0;
-    }
-    .footer-box__social-media{
-      display: flex;
-      justify-content: center;
-      padding: 0;
-    }
+  .footer-box{
+    padding: 2rem;
+    border-top: #40271d 1px solid;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
   }
-</style>
-
-<footer>
-  <div class="footer-box">
-    {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
-      <div class="footer-box__left-panel">
-      <div class="footer-box__subscription">
-        {% form 'customer' %}
-          {{ form.errors | default_errors }}
-          {% if form.posted_successfully? %}
-            <p class="form--success">Thank you for subscription</p>
-          {% else %}
-            <div class="input-group password__input-group">
-              <input type="hidden" name="contact[tags]" value="newsletter">
-              <input type="email"
-                name="contact[email]"
-                id="Email"
-                class="input-group__field newsletter__input form-control"
-                value="{% if customer %}{{ customer.email }}{% endif %}"
-                placeholder="jake@email.com"
-                autocorrect="off"
-                autocapitalize="off">
-              <span class="input-group__btn">
-                <button type="submit" class="btn newsletter__submit custom-subscription" name="commit" id="Subscribe">
-                  <span class="newsletter__submit-text--large">Subscribe</span>
-                </button>
-              </span>
-            </div>
-          {% endif %}
-        {% endform %}
-      </div>      
-      <ul class="footer-box__social-media">
-        {% for social in social_accounts %}
-          {%- assign social_handle = social | handleize -%}
-          {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
-          {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
-
-          {% if settings[social_link] != blank %}
-            <li class="social-media__icons">
-              <a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
-                {% include social_icon %}
-                <span class="icon-fallback-text">{{ social }}</span>
-              </a>
-            </li>
-          {% endif %}
-
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="footer-box__right-panel">
-      <h4>Location:</h4>
-      <h5>{{section.settings.street_address}}</h5>
-      <h5>{{section.settings.zip_code}}</h5>
-      <h5>{{section.settings.city_prov}}</h5>
-    </div>
-    <div class="copy-right">
-      <small>{{ shop.name }} &copy; {{ 'now' | date: "%Y" }}</small>
-    </div>
-  </div>  
-</footer>
-
-{% schema %}
-  {
-    "name": "Footer",
-    "settings": [
-      {
-        "type": "link_list",
-        "id": "footer_linklist",
-        "label": "First menu",
-        "default": "footer"
-      },
-      {
-        "type": "text",
-        "id": "street_address",
-        "label": "Street Address",
-        "default": "123 street"
-      },
-      {
-        "type": "text",
-        "id": "zip_code",
-        "label": "Zip Code",
-        "default": "M1N 1N1"
-      },
-      {
-        "type": "text",
-        "id": "city_prov",
-        "label": "City, Province",
-        "default": "Toronto, ON"
+  .footer-box__left-panel{
+    display:grid;
+    grid-template-rows: 1fr auto;
+  }
+  .footer-box__right-panel{
+    text-align: center;
+  }
+  .footer-box__subscription{
+    margin: auto 0;
+  }
+  .footer-box__subscription form{
+    padding: 0 20%;
+  }
+  .custom-subscription{
+    border: 1px black solid;
+    border-radius: unset;
+  }
+  .footer-box__social-media{
+    margin: auto;
+  }
+  .footer-box__right-panel > p{
+    margin-bottom: 0;
+  }
+  .social-media__icons {
+    display: inline-block;
+    padding: 0 15px;
+  }
+  .copy-right{
+    text-align: center;
+    grid-column: 1/3;
+  }
+  
+  .form-control:focus{
+    border:1px solid black;
+    box-shadow: none;
+  }
+  
+  .form-control:hover{
+    border:1px solid black;
+    box-shadow: none;
+  }
+  
+  .btn:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  .button-wapper{
+    position:relative;
+    overflow: hidden;
+  }
+  
+  .hover-effect{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background-color: black;
+    position: absolute;
+    transition: all .5s ease;
+    z-index: -1;
+  }
+  
+  .button-wapper:hover .hover-effect{
+    transform: translateX(100%);
+  }
+  
+  .button-wapper:hover .newsletter__submit--text{
+    color: white;
+  }
+  
+  @media screen and (max-width:750px) {
+      .footer-box{
+        display: block;
       }
-    ]
-  }
-
-{% endschema %}
+      .footer-box__subscription form{
+        padding: 0;
+      }
+      .footer-box__social-media{
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+      }
+    }
+  </style>
+  
+  <footer>
+    <div class="footer-box">
+      {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+        <div class="footer-box__left-panel">
+        <div class="footer-box__subscription">
+          {% form 'customer' %}
+            {{ form.errors | default_errors }}
+            {% if form.posted_successfully? %}
+              <p class="form--success">Thank you for subscription</p>
+            {% else %}
+              <div class="input-group password__input-group">
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <input type="email"
+                  name="contact[email]"
+                  id="Email"
+                  class="input-group__field newsletter__input form-control"
+                  value="{% if customer %}{{ customer.email }}{% endif %}"
+                  placeholder="jake@email.com"
+                  autocorrect="off"
+                  autocapitalize="off">
+                <span class="input-group__btn">
+                  <button type="submit" class="btn newsletter__submit custom-subscription button-wapper" name="commit" id="Subscribe">
+                    <span class="newsletter__submit-text--large newsletter__submit--text">Subscribe</span>
+                    <div class="hover-effect"></div>
+                  </button>
+                </span>
+              </div>
+            {% endif %}
+          {% endform %}
+        </div>      
+        <ul class="footer-box__social-media">
+          {% for social in social_accounts %}
+            {%- assign social_handle = social | handleize -%}
+            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+            {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
+  
+            {% if settings[social_link] != blank %}
+              <li class="social-media__icons">
+                <a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
+                  {% include social_icon %}
+                  <span class="icon-fallback-text">{{ social }}</span>
+                </a>
+              </li>
+            {% endif %}
+  
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="footer-box__right-panel">
+        <h6>Location:</h6>
+        <p>{{section.settings.street_address}}</p>
+        <p>{{section.settings.zip_code}}</p>
+        <p>{{section.settings.city_prov}}</p>
+      </div>
+      <div class="copy-right">
+        <small>{{ shop.name }} &copy; {{ 'now' | date: "%Y" }}</small>
+      </div>
+    </div>  
+  </footer>
+  
+  {% schema %}
+    {
+      "name": "Footer",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "footer_linklist",
+          "label": "First menu",
+          "default": "footer"
+        },
+        {
+          "type": "text",
+          "id": "street_address",
+          "label": "Street Address",
+          "default": "123 street"
+        },
+        {
+          "type": "text",
+          "id": "zip_code",
+          "label": "Zip Code",
+          "default": "M1N 1N1"
+        },
+        {
+          "type": "text",
+          "id": "city_prov",
+          "label": "City, Province",
+          "default": "Toronto, ON"
+        }
+      ]
+    }
+  
+  {% endschema %}
+  
